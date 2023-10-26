@@ -11,8 +11,13 @@ import PostService from '../API/PostService';
 import Loader from '../components/UI/loader/Loader';
 import { useFetching } from '../hooks/useFatching';
 import Pagination from '../components/UI/pagination/Pagination';
+import { useLocation } from 'react-router-dom';
 
 function Posts() {
+    const location = useLocation()
+    const searchParams = new URLSearchParams(location.search)
+    const search = searchParams.get('search')
+
     const [modal, setModal] = useState(false)
     const [filter, setFilter] = useState({ sort: '', query: '' })
     const [posts, setPosts] = useState([])
@@ -27,6 +32,9 @@ function Posts() {
         setTotalPages(getPageCount(totalCount, limit))
     })
 
+    useEffect(() => {
+        // setFilter({ sort: '', query: search })
+    }, [])
 
     useEffect(() => {
         fetchPosts()
@@ -44,7 +52,7 @@ function Posts() {
 
     const changePage = (page) => {
         setPage(page)
-       
+
     }
 
     return (

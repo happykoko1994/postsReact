@@ -22,7 +22,7 @@ function AppRouter() {
             <Route path='/about' element={<About />} />
             <Route path='/' element={<LoginRoute><Login /></LoginRoute>} />
             <Route path='/login' element={<LoginRoute><Login /></LoginRoute>} />
-            <Route exact path='/posts' element={<ProtectectedRoute><Posts /></ProtectectedRoute>} />
+            <Route exact path='/posts/' element={<ProtectectedRoute><Posts /></ProtectectedRoute>} />
             <Route path='/posts/:id' element={<ProtectectedRoute><PostIdPage /></ProtectectedRoute>} />
             <Route path='/error' element={<Error />} />
         </Routes>

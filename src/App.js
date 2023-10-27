@@ -6,9 +6,11 @@ import { AuthContext } from "./context"
 import { useEffect, useState } from "react"
 
 function App() {
+  const [page, setPage] = useState(localStorage.getItem('page'))
   const [isAuth, setIsAuth] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
+  
   useEffect(() => {
     if (localStorage.getItem('auth')) {
       setIsAuth(true)
@@ -22,7 +24,8 @@ function App() {
       isAuth,
       setIsAuth,
       isLoading,
-      
+      page,
+      setPage
     }}>
       <BrowserRouter>
         <Navbar />

@@ -11,20 +11,20 @@ import PostService from '../API/PostService';
 import Loader from '../components/UI/loader/Loader';
 import { useFetching } from '../hooks/useFatching';
 import Pagination from '../components/UI/pagination/Pagination';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 function Posts() {
     const location = useLocation()
-    const searchParams = new URLSearchParams(location.search)
-    const search = searchParams.get('search')
-
+    const setParams = new URLSearchParams(location.search)
+    const search = setParams.get('page')
+    const [pageParams, setPageParams] = useSearchParams('')
     const [modal, setModal] = useState(false)
     const [filter, setFilter] = useState({ sort: '', query: '' })
     const [posts, setPosts] = useState([])
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
     const [totalPages, setTotalPages] = useState(0)
     const [limit, setLimit] = useState(10)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(search)
     const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
         const response = await PostService.getAll(limit, page)
         setPosts(response.data)
@@ -32,12 +32,12 @@ function Posts() {
         setTotalPages(getPageCount(totalCount, limit))
     })
 
-    useEffect(() => {
-        // setFilter({ sort: '', query: search })
-    }, [])
+
 
     useEffect(() => {
         fetchPosts()
+        setPageParams({ page: page })
+        // setPage(localStorage.getItem('page'))
 
     }, [page])
 
@@ -52,8 +52,10 @@ function Posts() {
 
     const changePage = (page) => {
         setPage(page)
+        localStorage.setItem('page', page)
 
     }
+
 
     return (
         <div className="App">

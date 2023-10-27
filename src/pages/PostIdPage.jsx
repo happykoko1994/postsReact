@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import PostService from "../API/PostService"
 import Loader from "../components/UI/loader/Loader"
 import '../styles/App.css'
+import { useContext } from "react"
+import { AuthContext } from "../context"
 
 function PostIdPage() {
     const params = useParams()
@@ -18,11 +20,12 @@ function PostIdPage() {
         const response = await PostService.getCommentsById(params.id)
         setComments(response.data)
     })
-
+    const { page, setPage } = useContext(AuthContext)
 
     useEffect(() => {
         fetchPostById()
         fetchComments()
+        setPage(localStorage.getItem('page'))
     }, [])
 
     return (
@@ -34,7 +37,7 @@ function PostIdPage() {
             }
             <button
                 className="post__button"
-                onClick={() => router(`/posts`)}
+                onClick={() => router(`/posts?page=${page}`)}
 
             >Назад</button>
             <h3 className="comm_title">Комментарии</h3>
